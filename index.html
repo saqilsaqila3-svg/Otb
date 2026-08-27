@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Catatan OTB & Warna Kabel</title>
+    <style>
+        /* Reset Dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-y: auto;
+            position: relative;
+            padding: 20px 10px;
+            
+            /* Latar Belakang Gambar Penuh Layar */
+            background-image: url('One piece.jpg'); /* GANTI DENGAN NAMA FILE GAMBAR ANDA */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        /* Lapisan Gelap Transparan di Atas Gambar */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        /* Kontainer Utama Catatan */
+        .container {
+            position: relative;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 10px;
+        }
+
+        /* Judul Teks Warna Bergerak */
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ff007f, #00ffff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: warnaBergerak 6s ease infinite;
+        }
+
+        @keyframes warnaBergerak {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Form Input */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            color: #fff;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        select option {
+            background: #222;
+            color: #fff;
+        }
+
+        input:focus, select:focus {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        }
+
+        .btn-tambah {
+            width: 100%;
+            padding: 12px;
+            background: #00ffff;
+            border: none;
+            border-radius: 8px;
+            color: #111;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+        }
+
+        .btn-tambah:hover {
+            background: #ff007f;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+        }
+
+        /* Daftar List Catatan */
+        .list-container {
+            margin-top: 20px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .list-container::-webkit-scrollbar {
+            width: 5px;
+        }
+        .list-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            color: #fff;
+            border-left: 4px solid #00ffff;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .item-row {
+            font-size: 1rem;
+        }
+        
+        .label-blue {
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .label-yellow {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        /* Tombol Hapus Bulat Kanan */
+        .btn-delete {
+            background: rgba(255, 77, 77, 0.2);
+            color: #ff4d4d;
+            border: 1px solid rgba(255, 77, 77, 0.4);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: #ff4d4d;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Kontainer Aplikasi -->
+    <div class="container">
+        <h2>Data OTB & Kabel</h2>
+        
+        <div class="input-group">
+            <label for="namaOtb">Nama / Detail OTB</label>
+            <input type="text" id="namaOtb" placeholder="Contoh: OTB-A-Slot 1">
+        </div>
+
+        <div class="input-group">
+            <label for="warnaKabel">Warna Kabel / Core</label>
+            <select id="warnaKabel">
+                <option value="">-- Pilih Warna Kabel --</option>
+                <option value="Biru">1. Biru</option>
+                <option value="Oranye">2. Oranye</option>
+                <option value="Hijau">3. Hijau</option>
+                <option value="Cokelat">4. Cokelat</option>
+                <option value="Abu-abu">5. Abu-abu</option>
+                <option value="Putih">6. Putih</option>
+                <option value="Merah">7. Merah</option>
+                <option value="Hitam">8. Hitam</option>
+                <option value="Kuning">9. Kuning</option>
+                <option value="Ungu">10. Ungu</option>
+                <option value="Pink">11. Pink</option>
+                <option value="Toska">12. Toska</option>
+            </select>
+        </div>
+
+        <button class="btn-tambah" onclick="tambahCatatan()">Simpan Data</button>
+
+        <div class="list-container" id="daftarCatatan">
+            <!-- Tempat data catatan muncul -->
+        </div>
+    </div>
+
+    <script>
+        // Menggunakan kunci penyimpanan baru agar tidak bentrok dengan data lama
+        let dataOtbKabel = JSON.parse(localStorage.getItem('dataOtbKabel')) || [];
+
+        function tampilkanData() {
+            const daftarCatatan = document.getElementById('daftarCatatan');
+            daftarCatatan.innerHTML = '';
+
+            dataOtbKabel.forEach((item, index) => {
+                daftarCatatan.innerHTML += `
+                    <div class="item">
+                        <div class="item-info">
+                            <div class="item-row"><span class="label-blue">OTB:</span> ${item.otb}</div>
+                            <div class="item-row"><span class="label-yellow">Kabel:</span> ${item.kabel}</div>
+                        </div>
+                        <button class="btn-delete" onclick="hapusCatatan(${index})" title="Hapus">✕</button>
+                    </div>
+                `;
+            });
+        }
+
+        function tambahCatatan() {
+            const otbInput = document.getElementById('namaOtb');
+            const kabelInput = document.getElementById('warnaKabel');
+
+            if (!otbInput.value.trim() || !kabelInput.value) {
+                alert('Harap isi detail OTB dan pilih warna kabel!');
+                return;
+            }
+
+            const dataBaru = {
+                otb: otbInput.value,
+                kabel: kabelInput.value
+            };
+
+            dataOtbKabel.push(dataBaru);
+            localStorage.setItem('dataOtbKabel', JSON.stringify(dataOtbKabel));
+            
+            tampilkanData();
+
+            // Reset input form
+            otbInput.value = '';
+            kabelInput.value = '';
+        }
+
+        function hapusCatatan(index) {
+            dataOtbKabel.splice(index, 1);
+            localStorage.setItem('dataOtbKabel', JSON.stringify(dataOtbKabel));
+            tampilkanData();
+        }
+
+        // Render data saat pertama kali dibuka
+        tampilkanData();
+    </script>
+</body>
+</html>
